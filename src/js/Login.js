@@ -24,7 +24,7 @@ export default function Login() {
 
   return isLoggedIn ? (
     <div>
-      <p>logged in</p>
+      <Crypt />
     </div>
   ) : (
     <div>
