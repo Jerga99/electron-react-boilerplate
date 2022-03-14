@@ -27,8 +27,18 @@ contextBridge.exposeInMainWorld('electron', {
     decrypt() {},
   },
 })
+contextBridge.exposeInMainWorld('login', {
+  loginCreds: {
+    async loggedIn(user) {
+      const logCheck = await ipcRenderer.invoke('logged-in', user)
+      if (logCheck === true) {
+        return true
+      }
+      return false
+    },
+  },
+})
 
 // ipcRenderer.on('user', (event, user) => {
 //   console.log(JSON.parse(user))
-//   const userasdfasdf = JSON.parse(user)
 // })
