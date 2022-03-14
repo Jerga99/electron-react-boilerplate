@@ -3,7 +3,6 @@ const fs = require('fs')
 const path = require('path')
 const jetpack = require('fs-jetpack')
 const crypto = require('crypto')
-const { user } = require('./main')
 
 contextBridge.exposeInMainWorld('electron', {
   notificationApi: {
@@ -27,11 +26,22 @@ contextBridge.exposeInMainWorld('electron', {
 
     decrypt() {},
   },
+})
+contextBridge.exposeInMainWorld('login', {
+  loginCreds: {
+    async loggedIn(user) {
+      const logCheck = await ipcRenderer.invoke('logged-in', user)
 
-  user,
+      if (logCheck === true) {
+        console.log('inside function: ', true)
+        return true
+      }
+      console.log('inside function: ', false)
+      return false
+    },
+  },
 })
 
 // ipcRenderer.on('user', (event, user) => {
 //   console.log(JSON.parse(user))
-//   const userasdfasdf = JSON.parse(user)
 // })

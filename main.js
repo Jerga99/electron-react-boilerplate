@@ -1,22 +1,24 @@
 const { BrowserWindow, app, ipcMain, Notification } = require('electron')
 const path = require('path')
+const { createHash, createHmac } = require('crypto')
+// const crypto = require('crypto')
+
+let win
 
 const isDev = !app.isPackaged
 
 const user = JSON.stringify({
-  user: {
-    username: 'username',
-    password: 'password',
-  },
+  username: 'username',
+  password: 'password',
 })
 
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 1200,
+  win = new BrowserWindow({
+    width: 600,
     height: 800,
     backgroundColor: 'white',
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -38,10 +40,37 @@ if (isDev) {
 
 // ipcMain.on('notify', (_, message) => {
 //   new Notification({ title: 'Notifiation', body: message }).show()
+// }
+// ipcMain.on('logIn-test', (event, logIn) => {
+//   //generate hashes
+//   const hash = createHash('sha256')
+//   const hash2 = createHash('sha256')
+
+//   //digest hashes
+//   const compare1 = hash.update(JSON.stringify(logIn)).digest('hex')
+//   const compare2 = hash2.update(user).digest('hex')
+//   // console.log('logIn: \n', compare1)
+//   // console.log('user obj: \n', compare2)
+
+//   //compare hashes
+//   console.log(compare1 === compare2)
+//   return compare1 === compare2 ? (loggedIn = true) : (loggedIn = false)
 // })
 
-// ipcMain.on('did-finish-load', () => {
-//   ipcMain.send('user', user)
-// })
+ipcMain.handle('logged-in', (event, logIn) => {
+  //generate hashes
+  const hash = createHash('sha256')
+  const hash2 = createHash('sha256')
+
+  //digest hashes
+  const compare1 = hash.update(JSON.stringify(logIn)).digest('hex')
+  const compare2 = hash2.update(user).digest('hex')
+  // console.log('logIn: \n', compare1)
+  // console.log('user obj: \n', compare2)
+
+  //compare hashes
+  console.log(compare1 === compare2)
+  return compare1 === compare2
+})
 
 app.whenReady().then(createWindow)
