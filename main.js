@@ -1,33 +1,47 @@
+const { BrowserWindow, app, ipcMain, Notification } = require('electron')
+const path = require('path')
 
-const { BrowserWindow, app, ipcMain, Notification } = require('electron');
-const path = require('path');
+const isDev = !app.isPackaged
 
-const isDev = !app.isPackaged;
+const user = JSON.stringify({
+  user: {
+    username: 'username',
+    password: 'password',
+  },
+})
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       worldSafeExecuteJavaScript: true,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: path.join(__dirname, 'preload.js'),
+    },
   })
 
-  win.loadFile('index.html');
+  win.loadFile('index.html')
+
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('user', user)
+  })
 }
 
 if (isDev) {
   require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
   })
 }
 
-ipcMain.on('notify', (_, message) => {
-  new Notification({title: 'Notifiation', body: message}).show();
-})
+// ipcMain.on('notify', (_, message) => {
+//   new Notification({ title: 'Notifiation', body: message }).show()
+// })
+
+// ipcMain.on('did-finish-load', () => {
+//   ipcMain.send('user', user)
+// })
 
 app.whenReady().then(createWindow)

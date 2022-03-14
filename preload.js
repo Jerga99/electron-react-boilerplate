@@ -1,16 +1,34 @@
-
-const { ipcRenderer, contextBridge } = require('electron');
+const { ipcRenderer, contextBridge } = require('electron')
+const fs = require('fs')
+const path = require('path')
+const jetpack = require('fs-jetpack')
+const crypto = require('crypto')
 
 contextBridge.exposeInMainWorld('electron', {
   notificationApi: {
     sendNotification(message) {
-      ipcRenderer.send('notify', message);
-    }
+      ipcRenderer.send('notify', message)
+    },
   },
-  batteryApi: {
 
+  jp: {
+    write() {
+      // jetpack.write()
+      console.log('yo')
+    },
+
+    read() {
+      // jetpack.read()
+      console.log('what up?')
+    },
+
+    encrypt() {},
+
+    decrypt() {},
   },
-  filesApi: {
-
-  }
 })
+
+// ipcRenderer.on('user', (event, user) => {
+//   console.log(JSON.parse(user))
+//   const userasdfasdf = JSON.parse(user)
+// })
