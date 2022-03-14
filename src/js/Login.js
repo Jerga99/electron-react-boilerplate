@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { electron } from 'webpack'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -12,6 +13,9 @@ export default function Login() {
     evt.preventDefault()
   }
 
+  // return electron.jp.read(username === file.user) && electron.jp.read(password === file.pass) ? (
+  //   <Crypt/>
+  // ) :
   return (
     <div>
       {electron.jp.read()}

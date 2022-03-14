@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const jetpack = require('fs-jetpack')
 const crypto = require('crypto')
+const { user } = require('./main')
 
 contextBridge.exposeInMainWorld('electron', {
   notificationApi: {
@@ -26,6 +27,8 @@ contextBridge.exposeInMainWorld('electron', {
 
     decrypt() {},
   },
+
+  user,
 })
 
 // ipcRenderer.on('user', (event, user) => {
