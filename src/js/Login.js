@@ -13,15 +13,10 @@ export default function Login() {
     evt.preventDefault()
     const user = { username, password }
     const test = await login.loginCreds.loggedIn(user)
-    console.log('promis test on login, ', test)
     if (test) {
       setIsLoggedIn(true)
-      console.log('outside function: true')
-      console.log('logged in (state)', isLoggedIn)
     } else {
       setIsLoggedIn(false)
-      console.log('outside function: false')
-      console.log('not logged in (state)', isLoggedIn)
     }
     setPassword('')
     setUsername('')

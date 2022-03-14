@@ -50,7 +50,6 @@ ipcMain.handle('logged-in', (event, logIn) => {
   // console.log('user obj: \n', compare2)
 
   //compare hashes
-  console.log(compare1 === compare2)
   return compare1 === compare2
 })
 

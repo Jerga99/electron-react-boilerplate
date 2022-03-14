@@ -31,12 +31,9 @@ contextBridge.exposeInMainWorld('login', {
   loginCreds: {
     async loggedIn(user) {
       const logCheck = await ipcRenderer.invoke('logged-in', user)
-
       if (logCheck === true) {
-        console.log('inside function: ', true)
         return true
       }
-      console.log('inside function: ', false)
       return false
     },
   },
