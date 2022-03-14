@@ -4,7 +4,6 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [counter, setCounter] = useState(0)
 
   const handleUsername = (evt) => setUsername(evt.target.value)
 
@@ -26,7 +25,6 @@ export default function Login() {
     }
     setPassword('')
     setUsername('')
-    setCounter(counter + 1)
   }
 
   return isLoggedIn ? (
