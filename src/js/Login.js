@@ -1,26 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import Crypt from './Crypt';
 
 export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleUsername = (evt) => setUsername(evt.target.value)
+  const handleUsername = (evt) => setUsername(evt.target.value);
 
-  const handlePassword = (evt) => setPassword(evt.target.value)
+  const handlePassword = (evt) => setPassword(evt.target.value);
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault()
-    const user = { username, password }
-    const test = await login.loginCreds.loggedIn(user)
+    evt.preventDefault();
+    const user = { username, password };
+    const test = await login.loginCreds.loggedIn(user);
     if (test) {
-      setIsLoggedIn(true)
+      setIsLoggedIn(true);
     } else {
-      setIsLoggedIn(false)
+      setIsLoggedIn(false);
     }
-    setPassword('')
-    setUsername('')
-  }
+    setPassword('');
+    setUsername('');
+  };
 
   return isLoggedIn ? (
     <div>
@@ -44,7 +45,7 @@ export default function Login() {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 {
