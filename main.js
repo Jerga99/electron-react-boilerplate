@@ -55,6 +55,17 @@ ipcMain.handle('logged-in', (event, logIn) => {
   return compare1 === compare2;
 });
 
+ipcMain.on('save', async (event, data) => {
+  let ciphertext = CryptoJS.AES.encrypt(data, 'secret key 123').toString();
+  fs.writeFile('/Users/jondonadio/test.txt', ciphertext, (err) => {
+    if (!err) {
+      console.log('file written');
+    } else {
+      console.log(err);
+    }
+  });
+});
+
 ipcMain.handle('open-file-dialog', (event, config) => {
   try {
     let path = dialog.showOpenDialogSync(win, config)[0];
