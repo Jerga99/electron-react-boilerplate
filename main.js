@@ -1,7 +1,10 @@
 const { BrowserWindow, app, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { createHash } = require('crypto');
+const { createHash, Cipher } = require('crypto');
+var CryptoJS = require('crypto-js');
+var AES = require('crypto-js/aes');
+var SHA256 = require('crypto-js/sha256');
 // const crypto = require('crypto')
 
 let win;
@@ -9,8 +12,8 @@ let win;
 const isDev = !app.isPackaged;
 
 const user = JSON.stringify({
-  username: 'username',
-  password: 'password',
+  username: '',
+  password: '',
 });
 
 function createWindow() {
@@ -47,27 +50,29 @@ ipcMain.handle('logged-in', (event, logIn) => {
   //digest hashes
   const compare1 = hash.update(JSON.stringify(logIn)).digest('hex');
   const compare2 = hash2.update(user).digest('hex');
-  // console.log('logIn: \n', compare1)
-  // console.log('user obj: \n', compare2)
 
   //compare hashes
   return compare1 === compare2;
 });
 
-ipcMain.on('open-file-dialog', async (event) => {
-  var paths = dialog.showOpenDialogSync(win, {
-    properties: ['openFile', 'multiSelections'],
-  });
+ipcMain.handle('open-file-dialog', (event, config) => {
+  try {
+    let path = dialog.showOpenDialogSync(win, config)[0];
+    console.log(path);
+
+    if (path === undefined) {
+      console.log('undefined path!');
+      event.returnValue = undefined;
+      return;
+    }
+    let file = fs.readFileSync(path);
+    return file.toString();
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-ipcMain.on('save', async (event, data) => {
-  fs.writeFile('/Users/jondonadio/test.txt', data, (err) => {
-    if (!err) {
-      console.log('file written');
-    } else {
-      console.log(err);
-    }
-  });
-});
+// var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+// var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
 app.whenReady().then(createWindow);

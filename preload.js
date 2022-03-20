@@ -8,16 +8,14 @@ contextBridge.exposeInMainWorld('electron', {
   },
 
   jp: {
-    selectFile() {
-      // jetpack.write()
-      ipcRenderer.send('open-file-dialog');
+ 
+    async openFile() {
+      // jetpack.read()
+      const data = await ipcRenderer.invoke('open-file-dialog');
+      console.log(data);
+      return data;
     },
 
-    readData(data) {
-      // jetpack.read()
-      const returnData = ipcRenderer.invoke('read', data);
-      return returnData;
-    },
     sendData(data) {
       ipcRenderer.send('save', data);
     },
@@ -39,6 +37,6 @@ contextBridge.exposeInMainWorld('login', {
   },
 });
 
-// ipcRenderer.on('user', (event, user) => {
-//   console.log(JSON.parse(user))
-// })
+ipcRenderer.on('fileData', (event, data) => {
+  console.log(data);
+});
